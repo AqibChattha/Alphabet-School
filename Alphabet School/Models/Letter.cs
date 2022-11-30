@@ -41,7 +41,7 @@ namespace Alphabet_School.Models
         {
             string result = string.Empty;
             result += this.name + "[";
-            for (int i = 0; i < this.shapes?.Count; i++)
+            for (int i = 0; i < this.shapes.Count; i++)
             {
                 // Add the shape's string representation to the result string.
                 result += this.shapes[i].ToString();

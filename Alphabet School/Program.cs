@@ -1,4 +1,8 @@
-﻿namespace Alphabet_School
+﻿// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Alphabet_School
 {
     /// <summary>
     /// The main class of the program.
@@ -11,10 +15,12 @@
         /// <param name="args">String arguments for the main method.</param>
         private static void Main(string[] args)
         {
-            int mainMenuInput = 0;
+            Views view = new Views();
+            int mainMenuInput;
+
             do
             {
-                mainMenuInput = Views.MainMenu;
+                mainMenuInput = view.MainMenu;
                 int shapeMenuInput;
                 int letterMenuInput;
 
@@ -23,24 +29,81 @@
                     case 1:
                         do
                         {
-                            shapeMenuInput = Views.ShapesMenu;
+                            shapeMenuInput = view.ShapesMenu;
+
+                            switch (shapeMenuInput)
+                            {
+                                case 1:
+                                    view.CreateShape();
+                                    break;
+                                case 2:
+                                    view.UpdateShape();
+                                    break;
+                                case 3:
+                                    view.DisplayAllShapes();
+                                    break;
+                                case 4:
+                                    view.DeleteShape();
+                                    break;
+                                case 5:
+                                    view.DeleteAllShapes();
+                                    break;
+                                case 6:
+                                    view.UndoLastActionFromShapesMenu();
+                                    view.UndoLastAction();
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                        while (shapeMenuInput > 0 && shapeMenuInput < 6);
+                        while (shapeMenuInput > 0 && shapeMenuInput < 7);
                         break;
 
                     case 2:
                         do
                         {
-                            letterMenuInput = Views.LetterMenu;
+                            letterMenuInput = view.LetterMenu;
+
+                            switch (letterMenuInput)
+                            {
+                                case 1:
+                                    view.CreateLetter();
+                                    break;
+                                case 2:
+                                    view.DisplayAllLetters();
+                                    break;
+                                case 3:
+                                    view.DeleteLetter();
+                                    break;
+                                case 4:
+                                    view.DeleteAllLetters();
+                                    break;
+                                case 5:
+                                    view.UndoLastActionFromLettersMenu();
+                                    view.UndoLastAction();
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                         while (letterMenuInput > 0 && letterMenuInput < 6);
                         break;
 
+                    case 3:
+                        view.UndoLastActionFromMainMenu();
+                        view.UndoLastAction();
+                        break;
+
                     default:
+                        if (!view.Exit())
+                        {
+                            mainMenuInput = 1;
+                        }
+
                         break;
                 }
             }
-            while (mainMenuInput > 0 && mainMenuInput < 3);
+            while (mainMenuInput > 0 && mainMenuInput < 4);
         }
     }
 }

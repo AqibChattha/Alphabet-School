@@ -15,19 +15,31 @@ namespace Alphabet_School.Handlers
         // List of letters. This list is used to store all the capital alphbet letters of english.
         private List<Letter> englishAlphabets;
 
-        // List of letter. These are the letters that are created by the children during the program execution.
+        // List of letters. These are the letters that are created by the children during the program execution.
         private List<Letter> userLetters;
+
+        // List of letters. Used to store that are changed.
+        private List<Letter> undoLetters;
+
+        // The recently excecuted letter command, that can be undone.
+        private UndoCommandEnum undoCommand;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LetterHandler"/> class.
         /// </summary>
         public LetterHandler()
         {
-            // Initialize the list of letters.
+            // Initialize the list of letters added by user.
             this.userLetters = new List<Letter>();
+
+            // Initialize the list of letters that are changed.
+            this.undoLetters = new List<Letter>();
 
             // Initialize the list of english alphabets.
             this.englishAlphabets = new List<Letter>();
+
+            // At start there is nothing to undo
+            this.undoCommand = 0;
 
             // Add all the english alphabets with their shapes to the list.
             this.englishAlphabets.Add(new Letter('A', new List<Shape> { new Shape(ShapeTypeEnum.BigLine), new Shape(ShapeTypeEnum.BigLine), new Shape(ShapeTypeEnum.SmallLine) }));
@@ -56,6 +68,11 @@ namespace Alphabet_School.Handlers
             this.englishAlphabets.Add(new Letter('X', new List<Shape> { new Shape(ShapeTypeEnum.BigLine), new Shape(ShapeTypeEnum.BigLine) }));
             this.englishAlphabets.Add(new Letter('Y', new List<Shape> { new Shape(ShapeTypeEnum.SmallLine), new Shape(ShapeTypeEnum.SmallLine), new Shape(ShapeTypeEnum.SmallLine) }));
             this.englishAlphabets.Add(new Letter('Z', new List<Shape> { new Shape(ShapeTypeEnum.SmallLine), new Shape(ShapeTypeEnum.BigLine), new Shape(ShapeTypeEnum.SmallLine) }));
+
+            this.userLetters.Add(new Letter('C', new List<Shape> { new Shape(ShapeTypeEnum.BigCircle, ColorsEnum.Blue, TexturesEnum.Solid) }));
+            this.userLetters.Add(new Letter('I', new List<Shape> { new Shape(ShapeTypeEnum.BigLine, ColorsEnum.Red, TexturesEnum.Dotted), new Shape(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid), new Shape(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid) }));
+            this.userLetters.Add(new Letter('M', new List<Shape> { new Shape(ShapeTypeEnum.BigLine, ColorsEnum.Orange, TexturesEnum.Solid), new Shape(ShapeTypeEnum.BigLine, ColorsEnum.Blue, TexturesEnum.Solid), new Shape(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid), new Shape(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid) }));
+            this.userLetters.Add(new Letter('P', new List<Shape> { new Shape(ShapeTypeEnum.BigLine, ColorsEnum.Green, TexturesEnum.Sand), new Shape(ShapeTypeEnum.SmallCurve, ColorsEnum.Blue, TexturesEnum.Solid) }));
         }
 
         /// <summary>
@@ -105,11 +122,51 @@ namespace Alphabet_School.Handlers
         }
 
         /// <summary>
+        /// Get the letter from the default alphabets list on the base on letter name.
+        /// </summary>
+        /// <param name="name">The name of the default letter to be serched.</param>
+        /// <returns>Letter where the name is matched, if not then it returns null.</returns>
+        public Letter? GetAlphabetOnName(char name)
+        {
+            for (int i = 0; i < this.englishAlphabets.Count; i++)
+            {
+                if (this.englishAlphabets[i].Name == name)
+                {
+                    return this.englishAlphabets[i];
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// This method is used to get the list of user letters.
         /// </summary>
         /// <returns>The list of letters.</returns>
         /// <remarks>It returns the list of letters added by the user.</remarks>
         public List<Letter> GetLetters() => this.userLetters;
+
+        /// <summary>
+        /// Get all the letters in user list which are made of number of shapes greater then given number.
+        /// </summary>
+        /// <param name="shapesNum">The number of shapes should be greater then this param.</param>
+        /// <returns>The list of letter that have shapes number greater than given number.</returns>
+        public List<Letter> GetLettersWithShapeNumMoreThen(int shapesNum)
+        {
+            return this.userLetters.Where(letter => letter.Shapes.Count > shapesNum).ToList();
+        }
+
+        /// <summary>
+        /// Get all the letters in user list which contains a shapes with the given color.
+        /// </summary>
+        /// <param name="strColor">The color of shapes the letters should contain.</param>
+        /// <returns>List of letter which contain the shape of given color.</returns>
+        public List<Letter> GetLettersWithShapesColor(string strColor)
+        {
+            // parse the color.
+            ColorsEnum color = Enum.TryParse(strColor, out color) ? color : 0;
+            return this.userLetters.Where(letter => letter.Shapes.Any(shape => shape.Color == color)).ToList();
+        }
 
         /// <summary>
         /// This method is used to get the list of english alphabets.
@@ -119,78 +176,81 @@ namespace Alphabet_School.Handlers
         public List<Letter> GetEnglishAlphabets() => this.englishAlphabets;
 
         /// <summary>
-        /// This method is used to add a letter to the list of letters.
+        /// Create and add a new letter into the users letter list.
         /// </summary>
-        /// <param name="letter">The letter to be added.</param>
-        /// <returns>True if the letter is added successfully, false otherwise.</returns>
-        public bool AddLetter(Letter letter)
+        /// <param name="name">Name of the letter to be created.</param>
+        /// <param name="shapes">The shapes that will be used to create the letter.</param>
+        /// <returns>True if the letter is added successfuly.</returns>
+        public bool AddLetter(char name, List<Shape> shapes)
         {
-            // Check if the letter is valid english alphabet.
-            if (this.IsLetterValidEnglishAlphabet(letter))
+            Letter letter = new Letter(name, shapes);
+
+            // Add the letter to the list of letters. And return true.
+            this.userLetters.Add(letter);
+            this.undoCommand = UndoCommandEnum.Add;
+            this.undoLetters.Add(letter);
+            return true;
+        }
+
+        /// <summary>
+        /// This method is used to remove a letter from the list of letters.
+        /// </summary>
+        /// <param name="id">The id number display in the list.</param>
+        /// <returns>True if the letter is removed successfully, false otherwise.</returns>
+        public bool DeleteLetter(int id)
+        {
+            if (id >= 1 && id < this.userLetters.Count)
             {
-                // Add the letter to the list of letters. And return true.
-                this.userLetters.Add(letter);
+                this.undoCommand = UndoCommandEnum.Delete;
+                this.undoLetters.Add(this.userLetters[id - 1]);
+
+                // Remove the letter from the list of letters. And return true.
+                this.userLetters.RemoveAt(id - 1);
                 return true;
             }
 
-            // Return false if the letter is not a valid english alphabet.
             return false;
         }
 
-        private bool IsLetterValidEnglishAlphabet(Letter letter)
+        /// <summary>
+        /// Method to delete all the letters in the user letter's list.
+        /// </summary>
+        public void DeleteAllLetters()
         {
-            // Loop through all the english alphabets.
-            foreach (Letter alphabet in this.englishAlphabets)
+            this.undoCommand = UndoCommandEnum.DeleteAll;
+            this.undoLetters = this.userLetters;
+            this.userLetters = new List<Letter>();
+        }
+
+        /// <summary>
+        /// This method will undo the last action if there is any.
+        /// </summary>
+        /// <returns>The command number that is undone. 0 if there are no prior commands.</returns>
+        public int UndoCommand()
+        {
+            if (this.undoCommand == 0)
             {
-                // If the letter is found in the english alphabets, then it is valid.
-                if (alphabet.Name == letter.Name)
-                {
-                    // Check if the shapes are valid.
-                    if (alphabet.Shapes.Count == letter.Shapes.Count)
-                    {
-                        // create a copy of matched alphabet's shapes.
-                        List<Shape> alphShapes = alphabet.Shapes;
-
-                        // Loop through all the shapes of the letter.
-                        foreach (Shape letterShape in letter.Shapes)
-                        {
-                            // Loop through all the shapes of the alphabet matched.
-                            foreach (Shape alphShape in alphShapes)
-                            {
-                                // If the shape is found in the alphabet's shapes, then remove it from the copied list.
-                                if (alphShape.Type == letterShape.Type)
-                                {
-                                    alphShapes.Remove(alphShape);
-
-                                    // Break the loop as the shape is removed.
-                                    break;
-                                }
-                            }
-                        }
-
-                        // If the copied list is empty, then all the shapes are matched. So, the letter is valid, then return true.
-                        if (alphShapes.Count == 0)
-                        {
-                            return true;
-                        }
-
-                        // Else, the letter is invalid, then return false.
-                        else
-                        {
-                            return false;
-                        }
-                    }
-
-                    // If the number of shapes are not equal, then the letter is invalid, then return false.
-                    else
-                    {
-                        return false;
-                    }
-                }
+                return (int)this.undoCommand;
+            }
+            else if (this.undoCommand == UndoCommandEnum.Add)
+            {
+                this.userLetters.Remove(this.undoLetters[0]);
+            }
+            else if (this.undoCommand == UndoCommandEnum.Delete)
+            {
+                this.userLetters.Add(this.undoLetters[0]);
+            }
+            else if (this.undoCommand == UndoCommandEnum.DeleteAll)
+            {
+                this.userLetters = this.undoLetters;
+                this.undoLetters = new List<Letter>();
             }
 
-            // If the letter is not found in the english alphabets, then it is invalid, then return false.
-            return false;
+            // Reset the fields and return the command number.
+            int commandNumber = (int)this.undoCommand;
+            this.undoCommand = 0;
+            this.undoLetters.Clear();
+            return commandNumber;
         }
     }
 }

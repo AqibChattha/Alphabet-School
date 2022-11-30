@@ -36,10 +36,10 @@ namespace Alphabet_School.Models
         /// Initializes a new instance of the <see cref="Shape"/> class.
         /// A shape with all parameter defined such as color, texture and type.
         /// </summary>
+        /// <param name="type">The type of the shape.</param>
         /// <param name="color">The color of the shape.</param>
         /// <param name="texture">The texture of the shape.</param>
-        /// <param name="type">The type of the shape.</param>
-        public Shape(ColorsEnum color, TexturesEnum texture, ShapeTypeEnum type)
+        public Shape(ShapeTypeEnum type, ColorsEnum color, TexturesEnum texture)
         {
             this.color = color;
             this.texture = texture;
@@ -82,7 +82,8 @@ namespace Alphabet_School.Models
             string result = string.Empty;
             if (this.color != 0 || this.texture != 0)
             {
-                result += "(";
+                result += this.type;
+                result += " (";
                 if (this.color != 0)
                 {
                     result += "Color: " + this.color;
