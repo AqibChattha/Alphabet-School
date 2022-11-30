@@ -624,7 +624,7 @@ namespace Alphabet_School
         {
             while (true)
             {
-                string? input = Console.ReadLine()
+                string? input = Console.ReadLine();
 
                 // If the input is not null, then return the input.
                 if (input != null)
@@ -664,7 +664,7 @@ namespace Alphabet_School
         /// </summary>
         /// <param name="min">The lower limit of the integer input.</param>
         /// <param name="max">The upper limit of the integer input.</param>
-        /// <returns>The integer input with the bounds</returns>
+        /// <returns>The integer input with the bounds.</returns>
         private int BoundedIntegerInputFromConsole(int min, int max)
         {
             int intInput;
