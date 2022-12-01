@@ -1,25 +1,25 @@
-﻿// <copyright file="Views.cs" company="PlaceholderCompany">
+﻿// <copyright file="ConsoleView.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Alphabet_School
+namespace Alphabet_School.Views
 {
-    using Alphabet_School.Handlers;
+    using Alphabet_School.Controllers;
 
     /// <summary>
-    /// Represents the views of the application.
+    /// Represents the views of the console application.
     /// </summary>
-    public class Views
+    public class ConsoleView : IConsoleView
     {
         /// <summary>
         /// The handler to manage the letter objects.
         /// </summary>
-        private LetterHandler letterHandler;
+        private LetterController letterHandler;
 
         /// <summary>
         /// The handler to manage the shape objects.
         /// </summary>
-        private ShapeHandler shapeHandler;
+        private ShapeController shapeHandler;
 
         /// <summary>
         /// Check whether the last action performed for shape or not.
@@ -27,18 +27,16 @@ namespace Alphabet_School
         private bool isLastActionForShape;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Views"/> class.
+        /// Initializes a new instance of the <see cref="ConsoleView"/> class.
         /// </summary>
-        public Views()
+        public ConsoleView()
         {
-            this.letterHandler = new LetterHandler();
-            this.shapeHandler = new ShapeHandler();
+            this.letterHandler = new LetterController();
+            this.shapeHandler = new ShapeController();
             this.isLastActionForShape = false;
         }
 
-        /// <summary>
-        /// Gets the Main Menu input from the user after displaying the Main Menu.
-        /// </summary>
+        /// <inheritdoc/>
         public int MainMenu
         {
             get
@@ -57,9 +55,7 @@ namespace Alphabet_School
             }
         }
 
-        /// <summary>
-        /// Gets the Shapes Menu input from the user after displaying the Shapes Menu.
-        /// </summary>
+        /// <inheritdoc/>
         public int ShapesMenu
         {
             get
@@ -81,10 +77,8 @@ namespace Alphabet_School
             }
         }
 
-        /// <summary>
-        /// Gets the Letter Menu input from the user after displaying the Letter Menu.
-        /// </summary>
-        public int LetterMenu
+        /// <inheritdoc/>
+        public int LettersMenu
         {
             get
             {
@@ -104,9 +98,7 @@ namespace Alphabet_School
             }
         }
 
-        /// <summary>
-        /// Print the header when inside undo section from the Main Menu.
-        /// </summary>
+        /// <inheritdoc/>
         public void UndoLastActionFromMainMenu()
         {
             Console.Clear();
@@ -114,9 +106,7 @@ namespace Alphabet_School
                 "\n");
         }
 
-        /// <summary>
-        /// Print the header when inside undo section from the Shapes Menu.
-        /// </summary>
+        /// <inheritdoc/>
         public void UndoLastActionFromShapesMenu()
         {
             Console.Clear();
@@ -124,9 +114,7 @@ namespace Alphabet_School
                 "\n");
         }
 
-        /// <summary>
-        /// Print the header when inside undo section from the Letters Menu.
-        /// </summary>
+        /// <inheritdoc/>
         public void UndoLastActionFromLettersMenu()
         {
             Console.Clear();
@@ -134,9 +122,7 @@ namespace Alphabet_School
                 "\n");
         }
 
-        /// <summary>
-        /// This will undo the last action performed by the user.
-        /// </summary>
+        /// <inheritdoc/>
         public void UndoLastAction()
         {
             int commandType;
@@ -218,9 +204,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Takes input from the user, creates a shape and stores it into the list. Tells whether the shape was created or not.
-        /// </summary>
+        /// <inheritdoc/>
         public void CreateShape()
         {
             // Clear the console and get the necessory input from the user to create a shape.
@@ -251,9 +235,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Updates the shape at the given index with the new values.
-        /// </summary>
+        /// <inheritdoc/>
         public void UpdateShape()
         {
             // Clear the console and get the necessory input from the user to update a shape.
@@ -262,24 +244,32 @@ namespace Alphabet_School
                 "\n" +
                 "Enter the id shape you want to update:");
             int id = this.IntegerInputFromConsole();
-            Console.WriteLine();
-            Console.Write("Enter the shape type (BigLine, SmallLine, BigCurve, SmallCurve, BigCircle, SmallCircle): ");
-            string type = this.StringInputFromConsole();
-            Console.Write("Enter the shape color (Red, Blue, Orange, Green): ");
-            string color = this.StringInputFromConsole();
-            Console.Write("Enter the shape texture (Sand, Solid, Dotted): ");
-            string texture = this.StringInputFromConsole();
-            Console.WriteLine();
 
-            // Update the shape at the given index with the new values. If the shape was updated successfully, then add the command to the command list.
-            if (this.shapeHandler.UpdateShape(id, color, texture, type))
+            if (id > 0 && id <= this.shapeHandler.GetShapes().Count)
             {
-                Console.WriteLine("Shape updated successfully.");
-                this.isLastActionForShape = true;
+                Console.WriteLine();
+                Console.Write("Enter the shape type (BigLine, SmallLine, BigCurve, SmallCurve, BigCircle, SmallCircle): ");
+                string type = this.StringInputFromConsole();
+                Console.Write("Enter the shape color (Red, Blue, Orange, Green): ");
+                string color = this.StringInputFromConsole();
+                Console.Write("Enter the shape texture (Sand, Solid, Dotted): ");
+                string texture = this.StringInputFromConsole();
+                Console.WriteLine();
+
+                // Update the shape at the given index with the new values. If the shape was updated successfully, then add the command to the command list.
+                if (this.shapeHandler.UpdateShape(id, color, texture, type))
+                {
+                    Console.WriteLine("Shape updated successfully.");
+                    this.isLastActionForShape = true;
+                }
+                else
+                {
+                    Console.WriteLine("Shape updation failed.");
+                }
             }
             else
             {
-                Console.WriteLine("Shape updation failed.");
+                Console.WriteLine("Shape to update with given id is not found.");
             }
 
             // Wait for user to press any key to continue.
@@ -287,9 +277,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Display all the shapes in the list.
-        /// </summary>
+        /// <inheritdoc/>
         public void DisplayAllShapes()
         {
             // Clear the console and display all the shapes in the list.
@@ -356,9 +344,7 @@ namespace Alphabet_School
             while (key == 'f' || key == 'F' || key == 't' || key == 'T');
         }
 
-        /// <summary>
-        /// Deletes the shape at the given index.
-        /// </summary>
+        /// <inheritdoc/>
         public void DeleteShape()
         {
             // Clear the console and get the id from the user to delete a shape.
@@ -385,9 +371,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Deletes all the shapes in the list.
-        /// </summary>
+        /// <inheritdoc/>
         public void DeleteAllShapes()
         {
             // Clear the console and ask the user for confirmation.
@@ -415,9 +399,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Creates a new letter and adds it to the list.
-        /// </summary>
+        /// <inheritdoc/>
         public void CreateLetter()
         {
             // Clear the console and get the letter details from the user.
@@ -464,9 +446,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Displays all the letters in the list.
-        /// </summary>
+        /// <inheritdoc/>
         public void DisplayAllLetters()
         {
             // Clear the console and display all the letters in the list.
@@ -532,9 +512,7 @@ namespace Alphabet_School
             while (key == 'f' || key == 'F' || key == 't' || key == 'T');
         }
 
-        /// <summary>
-        /// Deletes a letter from the list.
-        /// </summary>
+        /// <inheritdoc/>
         public void DeleteLetter()
         {
             // Clear the console and display all the letters in the list. Get the letter id from the user.
@@ -561,9 +539,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Deletes all the letters from the list.
-        /// </summary>
+        /// <inheritdoc/>
         public void DeleteAllLetters()
         {
             // Clear the console and get the confirmation from the user.
@@ -591,10 +567,7 @@ namespace Alphabet_School
             this.PressAnyKeyToContinue();
         }
 
-        /// <summary>
-        /// Confirms about the exit from the application.
-        /// </summary>
-        /// <returns>True if the confirms the exit, otherwise false.</returns>
+        /// <inheritdoc/>
         public bool Exit()
         {
             // Clear the console and get the confirmation from the user.
@@ -616,11 +589,8 @@ namespace Alphabet_School
             }
         }
 
-        /// <summary>
-        /// Gets the string input from the console.
-        /// </summary>
-        /// <returns>String input.</returns>
-        private string StringInputFromConsole()
+        /// <inheritdoc/>
+        public string StringInputFromConsole()
         {
             while (true)
             {
@@ -636,11 +606,8 @@ namespace Alphabet_School
             }
         }
 
-        /// <summary>
-        /// Gets the integer input from the console.
-        /// </summary>
-        /// <returns>Integer input.</returns>
-        private int IntegerInputFromConsole()
+        /// <inheritdoc/>
+        public int IntegerInputFromConsole()
         {
             while (true)
             {
@@ -659,13 +626,8 @@ namespace Alphabet_School
             }
         }
 
-        /// <summary>
-        /// Gets the integer input from the console within a boundry.
-        /// </summary>
-        /// <param name="min">The lower limit of the integer input.</param>
-        /// <param name="max">The upper limit of the integer input.</param>
-        /// <returns>The integer input with the bounds.</returns>
-        private int BoundedIntegerInputFromConsole(int min, int max)
+        /// <inheritdoc/>
+        public int BoundedIntegerInputFromConsole(int min, int max)
         {
             int intInput;
 
@@ -691,12 +653,8 @@ namespace Alphabet_School
             return intInput;
         }
 
-        /// <summary>
-        /// Method called at the end of each function to stop and read a user key to continue.
-        /// </summary>
-        /// <param name="message">Messege to be displayed when the program is halted.</param>
-        /// <returns>The key that user pressed.</returns>
-        private char PressAnyKeyToContinue(string message = "Press any key to continue...")
+        /// <inheritdoc/>
+        public char PressAnyKeyToContinue(string message = "Press any key to continue...")
         {
             Console.WriteLine(message);
             return Console.ReadKey().KeyChar;

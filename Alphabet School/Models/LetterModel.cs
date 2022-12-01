@@ -1,4 +1,4 @@
-﻿// <copyright file="Letter.cs" company="PlaceholderCompany">
+﻿// <copyright file="LetterModel.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -7,34 +7,38 @@ namespace Alphabet_School.Models
     /// <summary>
     /// Represents a english alphabet Letter. A single or multiple shapes are used to create a letter.
     /// </summary>
-    public class Letter
+    public class LetterModel : ILetterModel
     {
         // The list letter's component shapes.
-        private List<Shape> shapes;
+        private List<IShapeModel> shapes;
 
         // The letter's name.
         private char name;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Letter"/> class.
+        /// Initializes a new instance of the <see cref="LetterModel"/> class.
         /// </summary>
         /// <param name="name">The character representing the shape.</param>
         /// <param name="shapes">The shapes used to build this letter.</param>
-        public Letter(char name, List<Shape> shapes)
+        public LetterModel(char name, List<IShapeModel> shapes)
         {
             this.name = name;
             this.shapes = shapes;
         }
 
-        /// <summary>
-        /// Gets the character representing the letter name.
-        /// </summary>
-        public char Name => this.name;
+        /// <inheritdoc/>
+        public char Name
+        {
+            get => this.name;
+            set => this.name = value;
+        }
 
-        /// <summary>
-        /// Gets the list of shapes that are used to create the letter.
-        /// </summary>
-        public List<Shape> Shapes => this.shapes;
+        /// <inheritdoc/>
+        public List<IShapeModel> Shapes
+        {
+            get => this.shapes;
+            set => this.shapes = value;
+        }
 
         /// <inheritdoc/>
         public override string ToString()

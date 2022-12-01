@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alphabet School", "Alphabet School\Alphabet School.csproj", "{DB3B5D3B-F4C7-4E91-A8F2-C6818E490625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alphabet School", "Alphabet School\Alphabet School.csproj", "{DB3B5D3B-F4C7-4E91-A8F2-C6818E490625}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alphabet School Tests", "Alphabet School Tests\Alphabet School Tests.csproj", "{663554BB-7CDB-412C-9189-386DA4768908}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DB3B5D3B-F4C7-4E91-A8F2-C6818E490625}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB3B5D3B-F4C7-4E91-A8F2-C6818E490625}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB3B5D3B-F4C7-4E91-A8F2-C6818E490625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{663554BB-7CDB-412C-9189-386DA4768908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{663554BB-7CDB-412C-9189-386DA4768908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{663554BB-7CDB-412C-9189-386DA4768908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{663554BB-7CDB-412C-9189-386DA4768908}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

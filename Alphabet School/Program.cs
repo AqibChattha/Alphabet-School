@@ -4,6 +4,8 @@
 
 namespace Alphabet_School
 {
+    using Alphabet_School.Views;
+
     /// <summary>
     /// The main class of the program.
     /// </summary>
@@ -15,7 +17,7 @@ namespace Alphabet_School
         /// <param name="args">String arguments for the main method.</param>
         private static void Main(string[] args)
         {
-            Views view = new Views();
+            IConsoleView view = new ConsoleView();
             int mainMenuInput;
 
             do
@@ -62,7 +64,7 @@ namespace Alphabet_School
                     case 2:
                         do
                         {
-                            letterMenuInput = view.LetterMenu;
+                            letterMenuInput = view.LettersMenu;
 
                             switch (letterMenuInput)
                             {

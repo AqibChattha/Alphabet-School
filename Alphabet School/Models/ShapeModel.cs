@@ -1,4 +1,4 @@
-﻿// <copyright file="Shape.cs" company="PlaceholderCompany">
+﻿// <copyright file="ShapeModel.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ namespace Alphabet_School.Models
     /// <summary>
     /// Represents a shape. A shape is a geometric figure. A single or multiple shapes are used to create a letter.
     /// </summary>
-    public class Shape
+    public class ShapeModel : IShapeModel
     {
         // The shape's color.
         private ColorsEnum color;
@@ -21,11 +21,11 @@ namespace Alphabet_School.Models
         private ShapeTypeEnum type;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Shape"/> class.
+        /// Initializes a new instance of the <see cref="ShapeModel"/> class.
         /// A shape without any color or texture.
         /// </summary>
         /// <param name="type">The type of shape.</param>
-        public Shape(ShapeTypeEnum type)
+        public ShapeModel(ShapeTypeEnum type)
         {
             this.type = type;
             this.color = 0;
@@ -33,50 +33,41 @@ namespace Alphabet_School.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Shape"/> class.
+        /// Initializes a new instance of the <see cref="ShapeModel"/> class.
         /// A shape with all parameter defined such as color, texture and type.
         /// </summary>
         /// <param name="type">The type of the shape.</param>
         /// <param name="color">The color of the shape.</param>
         /// <param name="texture">The texture of the shape.</param>
-        public Shape(ShapeTypeEnum type, ColorsEnum color, TexturesEnum texture)
+        public ShapeModel(ShapeTypeEnum type, ColorsEnum color, TexturesEnum texture)
         {
             this.color = color;
             this.texture = texture;
             this.type = type;
         }
 
-        /// <summary>
-        /// Gets or sets the color of the shape.
-        /// </summary>
+        /// <inheritdoc/>
         public ColorsEnum Color
         {
             get => this.color;
             set => this.color = value;
         }
 
-        /// <summary>
-        /// Gets or sets the texture of the shape.
-        /// </summary>
+        /// <inheritdoc/>
         public TexturesEnum Texture
         {
             get => this.texture;
             set => this.texture = value;
         }
 
-        /// <summary>
-        /// Gets or sets the type of the shape.
-        /// </summary>
+        /// <inheritdoc/>
         public ShapeTypeEnum Type
         {
             get => this.type;
             set => this.type = value;
         }
 
-        /// <summary>
-        /// Returns a string representation of the shape.
-        /// </summary>
-        /// <returns>A string representation of the shape.</returns>
+        /// <inheritdoc/>
         public override string ToString()
         {
             string result = string.Empty;
