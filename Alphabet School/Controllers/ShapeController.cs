@@ -17,13 +17,19 @@ namespace Alphabet_School.Controllers
         /// </summary>
         private List<IShapeModel> shapes;
 
-        // List of letters. Used to store that are changed.
+        /// <summary>
+        /// List of letters. Used to store that are changed.
+        /// </summary>
         private List<IShapeModel> undoShapes;
 
-        // The recently excecuted letter command, that can be undone.
+        /// <summary>
+        /// The recently excecuted letter command, that can be undone.
+        /// </summary>
         private UndoCommandEnum undoCommand;
 
-        // Used to undo the update command.
+        /// <summary>
+        /// Used by the undo command to locate the index in shapes list.
+        /// </summary>
         private int undoIndex;
 
         /// <summary>
@@ -33,17 +39,6 @@ namespace Alphabet_School.Controllers
         {
             // Initialize the list of shapes.
             this.shapes = new List<IShapeModel>();
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.BigLine, ColorsEnum.Blue, TexturesEnum.Sand));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Red, TexturesEnum.Dotted));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Orange, TexturesEnum.Solid));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Green, TexturesEnum.Sand));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Red, TexturesEnum.Dotted));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.SmallCurve, ColorsEnum.Blue, TexturesEnum.Sand));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.SmallCurve, ColorsEnum.Blue, TexturesEnum.Solid));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.BigLine, ColorsEnum.Green, TexturesEnum.Solid));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.BigLine, ColorsEnum.Orange, TexturesEnum.Dotted));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.BigCurve, ColorsEnum.Red, TexturesEnum.Sand));
-            this.shapes.Add(new ShapeModel(ShapeTypeEnum.BigCurve, ColorsEnum.Blue, TexturesEnum.Dotted));
 
             // Initialize the list of shapes that are changed.
             this.undoShapes = new List<IShapeModel>();
@@ -55,7 +50,10 @@ namespace Alphabet_School.Controllers
         }
 
         /// <inheritdoc/>
-        public bool CreateShape(string strColor, string strTexture, string strType)
+        public List<IShapeModel> Shapes => this.shapes;
+
+        /// <inheritdoc/>
+        public bool CreateShape(string strType, string strColor, string strTexture)
         {
             ColorsEnum colorsEnum;
             TexturesEnum texturesEnum;
@@ -74,6 +72,7 @@ namespace Alphabet_School.Controllers
 
                 // Set the recently excecuted command to create.
                 this.undoCommand = UndoCommandEnum.Add;
+                this.undoIndex = this.shapes.Count - 1;
 
                 // Return the created shape.
                 return true;
@@ -83,16 +82,19 @@ namespace Alphabet_School.Controllers
         }
 
         /// <inheritdoc/>
-        public bool UpdateShape(int id, string strColor, string strTexture, string strType)
+        public bool UpdateShape(int id, string strType, string strColor, string strTexture)
         {
             ColorsEnum colorsEnum;
             TexturesEnum texturesEnum;
             ShapeTypeEnum shapeTypeEnum;
 
-            if (id >= 1 && id < this.shapes.Count && Enum.TryParse(strColor, out colorsEnum) && Enum.TryParse(strTexture, out texturesEnum) && Enum.TryParse(strType, out shapeTypeEnum))
+            if (id >= 1 && id <= this.shapes.Count && Enum.TryParse(strColor, out colorsEnum) && Enum.TryParse(strTexture, out texturesEnum) && Enum.TryParse(strType, out shapeTypeEnum))
             {
                 // Get the shape from the list of shapes.
                 IShapeModel shape = this.shapes[id - 1];
+
+                // Add the shape to the list of shapes that are changed.
+                this.undoShapes.Add(new ShapeModel(shape.Type, shape.Color, shape.Texture));
 
                 // Update the color of the shape.
                 shape.Color = colorsEnum;
@@ -103,14 +105,13 @@ namespace Alphabet_School.Controllers
                 // Update the type of the shape.
                 shape.Type = shapeTypeEnum;
 
-                // Add the shape to the list of shapes that are changed.
-                this.undoShapes.Add(shape);
-
                 // Set the undo index to the index of shape that is changed.
                 this.undoIndex = id - 1;
 
                 // Set the recently excecuted command to update.
                 this.undoCommand = UndoCommandEnum.Update;
+
+                return true;
             }
 
             // false if no shape was found.
@@ -134,13 +135,14 @@ namespace Alphabet_School.Controllers
         public bool DeleteShape(int id)
         {
             // Check if the id is valid.
-            if (id < this.shapes.Count && id >= 1)
+            if (id <= this.shapes.Count && id >= 1)
             {
                 // Store the shape that is being deleted.
                 this.undoShapes.Add(this.shapes[id - 1]);
 
                 // Set the recently excecuted command to delete.
                 this.undoCommand = UndoCommandEnum.Delete;
+                this.undoIndex = id - 1;
 
                 // Remove the shape from the list of shapes.
                 this.shapes.RemoveAt(id - 1);
@@ -156,47 +158,45 @@ namespace Alphabet_School.Controllers
             // List of shapes that are removed.
             List<IShapeModel> shapesToRemove = new List<IShapeModel>();
 
-            for (int j = 0; j < matchShapes.Count; j++)
+            if (matchShapes != null)
             {
-                // If the shape is found in the list of shapes.
-                bool isAdded = false;
-                for (int i = 0; i < this.shapes.Count; i++)
+                for (int j = 0; j < matchShapes.Count; j++)
                 {
-                    // remove the matching shapes from the user's shape list and add them to the list of shapes to be removed.
-                    if (matchShapes[j].Type == this.shapes[i].Type && isAdded == false)
+                    // If the shape is found in the list of shapes.
+                    bool isAdded = false;
+                    for (int i = 0; i < this.shapes.Count; i++)
                     {
-                        shapesToRemove.Add(this.shapes[i]);
-                        this.shapes.Remove(this.shapes[i]);
+                        // remove the matching shapes from the user's shape list and add them to the list of shapes to be removed.
+                        if (matchShapes[j].Type == this.shapes[i].Type && isAdded == false)
+                        {
+                            shapesToRemove.Add(this.shapes[i]);
+                            this.shapes.Remove(this.shapes[i]);
 
-                        // Set to true so that the shape is not added again.
-                        isAdded = true;
+                            // Set to true so that the shape is not added again.
+                            isAdded = true;
 
-                        // Break the loop.
-                        break;
+                            // Break the loop.
+                            break;
+                        }
                     }
                 }
-            }
 
-            // Check if the shapes removed are equal to the shapes to be given for matching.
-            if (shapesToRemove.Count != matchShapes.Count)
-            {
-                // If the shapes are not equal, retain all the shapes removed and return null.
-                foreach (IShapeModel retainShape in shapesToRemove)
+                // Check if the shapes removed are equal to the shapes to be given for matching.
+                if (shapesToRemove.Count != matchShapes.Count)
                 {
-                    this.shapes.Add(retainShape);
+                    // If the shapes are not equal, retain all the shapes removed and return null.
+                    foreach (IShapeModel retainShape in shapesToRemove)
+                    {
+                        this.shapes.Add(retainShape);
+                    }
+
+                    return null;
                 }
 
-                return null;
+                return shapesToRemove;
             }
 
-            return shapesToRemove;
-        }
-
-        /// <inheritdoc/>
-        public List<IShapeModel> GetShapes()
-        {
-            // Return the list of shapes.
-            return this.shapes;
+            return null;
         }
 
         /// <inheritdoc/>
@@ -240,7 +240,7 @@ namespace Alphabet_School.Controllers
             }
             else if (this.undoCommand == UndoCommandEnum.Add)
             {
-                this.shapes.Remove(this.undoShapes[0]);
+                this.shapes.Remove(this.undoShapes[this.undoIndex]);
             }
             else if (this.undoCommand == UndoCommandEnum.Update)
             {
@@ -248,7 +248,7 @@ namespace Alphabet_School.Controllers
             }
             else if (this.undoCommand == UndoCommandEnum.Delete)
             {
-                this.shapes.Add(this.undoShapes[0]);
+                this.shapes.Insert(this.undoIndex, this.undoShapes[0]);
             }
             else if (this.undoCommand == UndoCommandEnum.DeleteAll)
             {
@@ -259,6 +259,7 @@ namespace Alphabet_School.Controllers
             // Reset the fields and return the command number.
             int commandNumber = (int)this.undoCommand;
             this.undoCommand = 0;
+            this.undoIndex = -1;
             this.undoShapes.Clear();
             return commandNumber;
         }

@@ -12,16 +12,24 @@ namespace Alphabet_School.Controllers
     /// </summary>
     public class LetterController : ILetterController
     {
-        // List of letters. This list is used to store all the capital alphbet letters of english.
+        /// <summary>
+        /// List of letters. This list is used to store all the capital alphbet letters of english.
+        /// </summary>
         private List<ILetterModel> englishAlphabets;
 
-        // List of letters. These are the letters that are created by the children during the program execution.
+        /// <summary>
+        /// List of letters. These are the letters that are created by the children during the program execution.
+        /// </summary>
         private List<ILetterModel> userLetters;
 
-        // List of letters. Used to store that are changed.
+        /// <summary>
+        /// List of letters. Used to store that are changed.
+        /// </summary>
         private List<ILetterModel> undoLetters;
 
-        // The recently excecuted letter command, that can be undone.
+        /// <summary>
+        /// The recently excecuted letter command, that can be undone.
+        /// </summary>
         private UndoCommandEnum undoCommand;
 
         /// <summary>
@@ -42,75 +50,42 @@ namespace Alphabet_School.Controllers
             this.undoCommand = 0;
 
             // Add all the english alphabets with their shapes to the list.
-            this.englishAlphabets.Add(new LetterModel('A', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('B', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallCurve), new ShapeModel(ShapeTypeEnum.SmallCurve) }));
+            this.englishAlphabets.Add(new LetterModel('A', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('B', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleCurve), new ShapeModel(ShapeTypeEnum.LittleCurve) }));
             this.englishAlphabets.Add(new LetterModel('C', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCurve) }));
             this.englishAlphabets.Add(new LetterModel('D', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigCurve) }));
-            this.englishAlphabets.Add(new LetterModel('E', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('F', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('G', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCurve), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('H', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('I', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('J', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallCurve) }));
-            this.englishAlphabets.Add(new LetterModel('K', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('L', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('M', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
+            this.englishAlphabets.Add(new LetterModel('E', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('F', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('G', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCurve), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('H', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('I', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('J', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleCurve) }));
+            this.englishAlphabets.Add(new LetterModel('K', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('L', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('M', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
             this.englishAlphabets.Add(new LetterModel('N', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine) }));
             this.englishAlphabets.Add(new LetterModel('O', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCircle) }));
-            this.englishAlphabets.Add(new LetterModel('P', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallCurve) }));
-            this.englishAlphabets.Add(new LetterModel('Q', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCircle), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('R', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallCurve), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('S', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.SmallCurve), new ShapeModel(ShapeTypeEnum.SmallCurve) }));
+            this.englishAlphabets.Add(new LetterModel('P', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleCurve) }));
+            this.englishAlphabets.Add(new LetterModel('Q', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCircle), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('R', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleCurve), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('S', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.LittleCurve), new ShapeModel(ShapeTypeEnum.LittleCurve) }));
             this.englishAlphabets.Add(new LetterModel('T', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine) }));
-            this.englishAlphabets.Add(new LetterModel('U', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallCurve), new ShapeModel(ShapeTypeEnum.SmallLine) }));
+            this.englishAlphabets.Add(new LetterModel('U', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleCurve), new ShapeModel(ShapeTypeEnum.LittleLine) }));
             this.englishAlphabets.Add(new LetterModel('V', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine) }));
-            this.englishAlphabets.Add(new LetterModel('W', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
+            this.englishAlphabets.Add(new LetterModel('W', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
             this.englishAlphabets.Add(new LetterModel('X', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.BigLine) }));
-            this.englishAlphabets.Add(new LetterModel('Y', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-            this.englishAlphabets.Add(new LetterModel('Z', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.SmallLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.SmallLine) }));
-
-            this.userLetters.Add(new LetterModel('C', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCircle, ColorsEnum.Blue, TexturesEnum.Solid) }));
-            this.userLetters.Add(new LetterModel('I', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine, ColorsEnum.Red, TexturesEnum.Dotted), new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid), new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid) }));
-            this.userLetters.Add(new LetterModel('M', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine, ColorsEnum.Orange, TexturesEnum.Solid), new ShapeModel(ShapeTypeEnum.BigLine, ColorsEnum.Blue, TexturesEnum.Solid), new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid), new ShapeModel(ShapeTypeEnum.SmallLine, ColorsEnum.Blue, TexturesEnum.Solid) }));
-            this.userLetters.Add(new LetterModel('P', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigLine, ColorsEnum.Green, TexturesEnum.Sand), new ShapeModel(ShapeTypeEnum.SmallCurve, ColorsEnum.Blue, TexturesEnum.Solid) }));
-        }
+            this.englishAlphabets.Add(new LetterModel('Y', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+            this.englishAlphabets.Add(new LetterModel('Z', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.LittleLine), new ShapeModel(ShapeTypeEnum.BigLine), new ShapeModel(ShapeTypeEnum.LittleLine) }));
+         }
 
         /// <inheritdoc/>
-        public List<ILetterModel> GetLetters() => this.userLetters;
-
-        /// <inheritdoc/>
-        public ILetterModel? GetAlphabetOnName(char name)
-        {
-            for (int i = 0; i < this.englishAlphabets.Count; i++)
-            {
-                if (this.englishAlphabets[i].Name == name)
-                {
-                    return this.englishAlphabets[i];
-                }
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc/>
-        public List<ILetterModel> GetLettersWithShapeNumMoreThen(int shapesNum)
-        {
-            return this.userLetters.Where(letter => letter.Shapes.Count > shapesNum).ToList();
-        }
-
-        /// <inheritdoc/>
-        public List<ILetterModel> GetLettersWithShapesColor(string strColor)
-        {
-            // parse the color.
-            ColorsEnum color = Enum.TryParse(strColor, out color) ? color : 0;
-            return this.userLetters.Where(letter => letter.Shapes.Any(shape => shape.Color == color)).ToList();
-        }
+        public List<ILetterModel> Letters => this.userLetters;
 
         /// <inheritdoc/>
         public List<ILetterModel> GetEnglishAlphabets() => this.englishAlphabets;
 
         /// <inheritdoc/>
-        public bool AddLetter(char name, List<IShapeModel> shapes)
+        public void AddLetter(char name, List<IShapeModel> shapes)
         {
             ILetterModel letter = new LetterModel(name, shapes);
 
@@ -118,13 +93,12 @@ namespace Alphabet_School.Controllers
             this.userLetters.Add(letter);
             this.undoCommand = UndoCommandEnum.Add;
             this.undoLetters.Add(letter);
-            return true;
         }
 
         /// <inheritdoc/>
         public bool DeleteLetter(int id)
         {
-            if (id >= 1 && id < this.userLetters.Count)
+            if (id >= 1 && id <= this.userLetters.Count)
             {
                 this.undoCommand = UndoCommandEnum.Delete;
                 this.undoLetters.Add(this.userLetters[id - 1]);
@@ -143,6 +117,34 @@ namespace Alphabet_School.Controllers
             this.undoCommand = UndoCommandEnum.DeleteAll;
             this.undoLetters = this.userLetters;
             this.userLetters = new List<ILetterModel>();
+        }
+
+        /// <inheritdoc/>
+        public List<IShapeModel>? GetAlphabetShapesOnName(char name)
+        {
+            for (int i = 0; i < this.englishAlphabets.Count; i++)
+            {
+                if (this.englishAlphabets[i].Name == name)
+                {
+                    return this.englishAlphabets[i].Shapes;
+                }
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public List<ILetterModel> GetLettersWithShapesColor(string strColor)
+        {
+            // parse the color.
+            ColorsEnum color = Enum.TryParse(strColor, out color) ? color : 0;
+            return this.userLetters.Where(letter => letter.Shapes.Any(shape => shape.Color == color)).ToList();
+        }
+
+        /// <inheritdoc/>
+        public List<ILetterModel> GetLettersWithShapeNumMoreThen(int shapesNum)
+        {
+            return this.userLetters.Where(letter => letter.Shapes.Count > shapesNum).ToList();
         }
 
         /// <inheritdoc/>

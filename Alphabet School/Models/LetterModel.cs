@@ -9,10 +9,14 @@ namespace Alphabet_School.Models
     /// </summary>
     public class LetterModel : ILetterModel
     {
-        // The list letter's component shapes.
+        /// <summary>
+        /// The list letter's component shapes.
+        /// </summary>
         private List<IShapeModel> shapes;
 
-        // The letter's name.
+        /// <summary>
+        /// The letter's name.
+        /// </summary>
         private char name;
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace Alphabet_School.Models
         public override string ToString()
         {
             string result = string.Empty;
-            result += this.name + "[";
+            result += this.name + " [";
             for (int i = 0; i < this.shapes.Count; i++)
             {
                 // Add the shape's string representation to the result string.

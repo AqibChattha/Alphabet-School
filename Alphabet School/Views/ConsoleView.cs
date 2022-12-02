@@ -211,7 +211,7 @@ namespace Alphabet_School.Views
             Console.Clear();
             Console.Write("Main Menu => Shapes Menu => Create a shape\n" +
                 "\n" +
-                "Enter the shape type (BigLine, SmallLine, BigCurve, SmallCurve, BigCircle, SmallCircle): ");
+                "Enter the shape type (BigLine, LittleLine, BigCurve, LittleCurve, BigCircle, LittleCircle): ");
             string type = this.StringInputFromConsole();
             Console.Write("Enter the shape color (Red, Blue, Orange, Green): ");
             string color = this.StringInputFromConsole();
@@ -220,7 +220,7 @@ namespace Alphabet_School.Views
             Console.WriteLine();
 
             // Create a shape object and store it in the list. If the shape was created successfully, then add the command to the command list.
-            if (this.shapeHandler.CreateShape(color, texture, type))
+            if (this.shapeHandler.CreateShape(type, color, texture))
             {
                 Console.WriteLine("Shape created successfully.");
                 this.isLastActionForShape = true;
@@ -245,10 +245,10 @@ namespace Alphabet_School.Views
                 "Enter the id shape you want to update:");
             int id = this.IntegerInputFromConsole();
 
-            if (id > 0 && id <= this.shapeHandler.GetShapes().Count)
+            if (id > 0 && id <= this.shapeHandler.Shapes.Count)
             {
                 Console.WriteLine();
-                Console.Write("Enter the shape type (BigLine, SmallLine, BigCurve, SmallCurve, BigCircle, SmallCircle): ");
+                Console.Write("Enter the shape type (BigLine, LittleLine, BigCurve, LittleCurve, BigCircle, LittleCircle): ");
                 string type = this.StringInputFromConsole();
                 Console.Write("Enter the shape color (Red, Blue, Orange, Green): ");
                 string color = this.StringInputFromConsole();
@@ -257,7 +257,7 @@ namespace Alphabet_School.Views
                 Console.WriteLine();
 
                 // Update the shape at the given index with the new values. If the shape was updated successfully, then add the command to the command list.
-                if (this.shapeHandler.UpdateShape(id, color, texture, type))
+                if (this.shapeHandler.UpdateShape(id, type, color, texture))
                 {
                     Console.WriteLine("Shape updated successfully.");
                     this.isLastActionForShape = true;
@@ -289,7 +289,7 @@ namespace Alphabet_School.Views
             int i = 1;
 
             // Print all the shapes in the list with id.
-            foreach (var shape in this.shapeHandler.GetShapes())
+            foreach (var shape in this.shapeHandler.Shapes)
             {
                 Console.WriteLine(i + " - " + shape.ToString());
                 i++;
@@ -312,7 +312,7 @@ namespace Alphabet_School.Views
                     foreach (var shape in this.shapeHandler.GetShapeByColor(color))
                     {
                         // Print all the shapes in the list with id of total list context.
-                        Console.WriteLine((this.shapeHandler.GetShapes().FindIndex(a => a == shape) + 1) + " - " + shape.ToString());
+                        Console.WriteLine((this.shapeHandler.Shapes.FindIndex(a => a == shape) + 1) + " - " + shape.ToString());
                     }
                 }
 
@@ -329,7 +329,7 @@ namespace Alphabet_School.Views
                     foreach (var shape in this.shapeHandler.GetShapesByTexture(texture))
                     {
                         // Print all the shapes in the list with id of total list context.
-                        Console.WriteLine((this.shapeHandler.GetShapes().FindIndex(a => a == shape) + 1) + " - " + shape.ToString());
+                        Console.WriteLine((this.shapeHandler.Shapes.FindIndex(a => a == shape) + 1) + " - " + shape.ToString());
                     }
                 }
 
@@ -421,7 +421,7 @@ namespace Alphabet_School.Views
             }
 
             // The template shapes needed to create the given letter.
-            var alphbetShapes = this.letterHandler.GetAlphabetOnName(name)?.Shapes;
+            var alphbetShapes = this.letterHandler.GetAlphabetShapesOnName(name);
 
             if (alphbetShapes != null)
             {
@@ -455,7 +455,7 @@ namespace Alphabet_School.Views
                 "\n" +
                 "All letters:");
             int i = 1;
-            foreach (var letter in this.letterHandler.GetLetters())
+            foreach (var letter in this.letterHandler.Letters)
             {
                 Console.WriteLine(i + " - " + letter.ToString());
                 i++;
@@ -479,7 +479,7 @@ namespace Alphabet_School.Views
                     // Print all the letters in the list with id of total list context.
                     foreach (var letter in this.letterHandler.GetLettersWithShapeNumMoreThen(shapesNum))
                     {
-                        Console.WriteLine((this.letterHandler.GetLetters().FindIndex(a => a == letter) + 1) + " - " + letter.ToString());
+                        Console.WriteLine((this.letterHandler.Letters.FindIndex(a => a == letter) + 1) + " - " + letter.ToString());
                     }
                 }
 
@@ -497,7 +497,7 @@ namespace Alphabet_School.Views
                     // Print all the letters in the list with id of total list context.
                     foreach (var letter in this.letterHandler.GetLettersWithShapesColor(color))
                     {
-                        Console.WriteLine((this.letterHandler.GetLetters().FindIndex(a => a == letter) + 1) + " - " + letter.ToString());
+                        Console.WriteLine((this.letterHandler.Letters.FindIndex(a => a == letter) + 1) + " - " + letter.ToString());
                     }
                 }
 

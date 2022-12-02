@@ -12,13 +12,19 @@ namespace Alphabet_School.Controllers
     public interface IShapeController
     {
         /// <summary>
+        /// Gets the list of shapes.
+        /// </summary>
+        /// <returns>The list of shapes.</returns>
+        public List<IShapeModel> Shapes { get; }
+
+        /// <summary>
         /// This method is used to create a shape.
         /// </summary>
         /// <param name="strColor">Color name of string data type.</param>
         /// <param name="strTexture">Texture name of string data type.</param>
         /// <param name="strType">Shape type name of string data type.</param>
         /// <returns>True, if the shape is created. Otherwise false.</returns>
-        public bool CreateShape(string strColor, string strTexture, string strType);
+        public bool CreateShape(string strType, string strColor, string strTexture);
 
         /// <summary>
         /// This method is used to update a shape.
@@ -28,7 +34,7 @@ namespace Alphabet_School.Controllers
         /// <param name="strTexture">The new texture of the shape.</param>
         /// <param name="strType">The new type of the shape.</param>
         /// <returns>True if the shape was updated, otherwise false.</returns>
-        public bool UpdateShape(int id, string strColor, string strTexture, string strType);
+        public bool UpdateShape(int id, string strType, string strColor, string strTexture);
 
         /// <summary>
         /// This method is used to delete all the user shapes.
@@ -48,12 +54,6 @@ namespace Alphabet_School.Controllers
         /// <param name="matchShapes">The sample of shape types to be matched.</param>
         /// <returns>List of shapes removed from user's shape list, if the shapes match. Null if the shapes don't match.</returns>
         public List<IShapeModel>? RemoveMatchingShapes(List<IShapeModel> matchShapes);
-
-        /// <summary>
-        /// This method is used to get the list of shapes.
-        /// </summary>
-        /// <returns>The list of shapes.</returns>
-        public List<IShapeModel> GetShapes();
 
         /// <summary>
         /// This method is used to get shape by their color.

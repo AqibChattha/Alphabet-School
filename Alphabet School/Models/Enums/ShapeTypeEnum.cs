@@ -17,7 +17,7 @@ namespace Alphabet_School.Models.Enums
         /// <summary>
         /// Small line shape type.
         /// </summary>
-        SmallLine,
+        LittleLine,
 
         /// <summary>
         /// Big curve shape type.
@@ -27,7 +27,7 @@ namespace Alphabet_School.Models.Enums
         /// <summary>
         /// Small curve shape type.
         /// </summary>
-        SmallCurve,
+        LittleCurve,
 
         /// <summary>
         /// Big circle shape type.
@@ -37,6 +37,6 @@ namespace Alphabet_School.Models.Enums
         /// <summary>
         /// Small circle shape type.
         /// </summary>
-        SmallCircle,
+        LittleCircle,
     }
 }

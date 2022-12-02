@@ -11,13 +11,19 @@ namespace Alphabet_School.Models
     /// </summary>
     public class ShapeModel : IShapeModel
     {
-        // The shape's color.
+        /// <summary>
+        /// The shape's color.
+        /// </summary>
         private ColorsEnum color;
 
-        // The shape's type.
+        /// <summary>
+        /// The shape's type.
+        /// </summary>
         private TexturesEnum texture;
 
-        // The shape's texture.
+        /// <summary>
+        /// The shape's texture.
+        /// </summary>
         private ShapeTypeEnum type;
 
         /// <summary>

@@ -2,28 +2,27 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using Alphabet_School.Models;
-
 namespace Alphabet_School.Controllers
 {
+    using Alphabet_School.Models;
+
     /// <summary>
     /// Interface for the letter controller.
     /// </summary>
     public interface ILetterController
     {
         /// <summary>
-        /// This method is used to get the list of user letters.
+        /// Gets the list of user letters.
         /// </summary>
         /// <returns>The list of letters.</returns>
-        /// <remarks>It returns the list of letters added by the user.</remarks>
-        public List<ILetterModel> GetLetters();
+        public List<ILetterModel> Letters { get; }
 
         /// <summary>
-        /// Get the letter from the default alphabets list on the base on letter name.
+        /// Get the list of shapes from the default alphabets list on the basis of letter name.
         /// </summary>
         /// <param name="name">The name of the default letter to be serched.</param>
-        /// <returns>Letter where the name is matched, if not then it returns null.</returns>
-        public ILetterModel? GetAlphabetOnName(char name);
+        /// <returns>List of shapes where the name is matched, if not then it returns null.</returns>
+        public List<IShapeModel>? GetAlphabetShapesOnName(char name);
 
         /// <summary>
         /// Get all the letters in user list which are made of number of shapes greater then given number.
@@ -51,8 +50,7 @@ namespace Alphabet_School.Controllers
         /// </summary>
         /// <param name="name">Name of the letter to be created.</param>
         /// <param name="shapes">The shapes that will be used to create the letter.</param>
-        /// <returns>True if the letter is added successfuly.</returns>
-        public bool AddLetter(char name, List<IShapeModel> shapes);
+        public void AddLetter(char name, List<IShapeModel> shapes);
 
         /// <summary>
         /// This method is used to remove a letter from the list of letters.
