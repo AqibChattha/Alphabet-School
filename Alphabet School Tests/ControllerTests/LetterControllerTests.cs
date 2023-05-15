@@ -2,11 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Alphabet_School_Tests.ControllerTests
+namespace Test.ControllerTests
 {
-    using Alphabet_School.Controllers;
-    using Alphabet_School.Models;
-    using Alphabet_School.Models.Enums;
+    using Engine.Controllers;
+    using Engine.Models;
+    using Engine.Models.Enums;
+    using NUnit.Framework;
 
     /// <summary>
     /// LetterControllerTests class. Contains tests for LetterController class.
@@ -46,10 +47,10 @@ namespace Alphabet_School_Tests.ControllerTests
             var result = letterController.GetAlphabetShapesOnName(letterName);
 
             // Assert
-            Assert.That(result, Has.Count.EqualTo(expectedLetter.Shapes.Count));
+            Assert.That(result, Has.Count.EqualTo(expectedLetter.GetShapes().Count));
             for (int i = 0; i < result.Count; i++)
             {
-                Assert.That(result[i].Type, Is.EqualTo(expectedLetter.Shapes[i].Type));
+                Assert.That(result[i].GetType(), Is.EqualTo(expectedLetter.GetShapes()[i].GetType()));
             }
         }
 
@@ -69,7 +70,7 @@ namespace Alphabet_School_Tests.ControllerTests
             letterController.AddLetter(letterName, shapes);
 
             // Assert
-            Assert.That(letterController.Letters, Has.Count.EqualTo(1));
+            Assert.That(letterController.GetLetters(), Has.Count.EqualTo(1));
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace Alphabet_School_Tests.ControllerTests
 
             // Assert
             Assert.That(result, Is.True);
-            Assert.That(letterController.Letters, Has.Count.EqualTo(2));
+            Assert.That(letterController.GetLetters(), Has.Count.EqualTo(2));
         }
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace Alphabet_School_Tests.ControllerTests
 
             // Assert
             Assert.That(result, Is.False);
-            Assert.That(letterController.Letters, Has.Count.EqualTo(3));
+            Assert.That(letterController.GetLetters(), Has.Count.EqualTo(3));
         }
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace Alphabet_School_Tests.ControllerTests
             letterController.DeleteAllLetters();
 
             // Assert
-            Assert.That(letterController.Letters, Has.Count.EqualTo(0));
+            Assert.That(letterController.GetLetters(), Has.Count.EqualTo(0));
         }
 
         /// <summary>
@@ -207,17 +208,17 @@ namespace Alphabet_School_Tests.ControllerTests
             // Act and Assert - AddLetter
             letterController.AddLetter('O', new List<IShapeModel> { new ShapeModel(ShapeTypeEnum.BigCircle, ColorsEnum.Green, TexturesEnum.Sand) });
             letterController.UndoCommand();
-            Assert.That(letterController.Letters.Count, Is.EqualTo(2));
+            Assert.That(letterController.GetLetters().Count, Is.EqualTo(2));
 
             // Act and Assert - DeleteLetter
             letterController.DeleteLetter(1);
             letterController.UndoCommand();
-            Assert.That(letterController.Letters.Count, Is.EqualTo(2));
+            Assert.That(letterController.GetLetters().Count, Is.EqualTo(2));
 
             // Act and Assert - DeleteAllLetters
             letterController.DeleteAllLetters();
             letterController.UndoCommand();
-            Assert.That(letterController.Letters.Count, Is.EqualTo(2));
+            Assert.That(letterController.GetLetters().Count, Is.EqualTo(2));
         }
     }
 }

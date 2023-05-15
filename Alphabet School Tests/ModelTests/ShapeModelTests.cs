@@ -2,10 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Alphabet_School_Tests.ModelTests
+namespace Test.ModelTests
 {
-    using Alphabet_School.Models;
-    using Alphabet_School.Models.Enums;
+    using Engine.Models;
+    using Engine.Models.Enums;
+    using NUnit.Framework;
 
     /// <summary>
     /// ShapeModelTests class. Contains tests for ShapeModel class.
@@ -32,9 +33,9 @@ namespace Alphabet_School_Tests.ModelTests
             IShapeModel shapeModel = new ShapeModel(type, color, texture);
 
             // Assert
-            Assert.That(shapeModel.Type, Is.EqualTo(type));
-            Assert.That(shapeModel.Color, Is.EqualTo(color));
-            Assert.That(shapeModel.Texture, Is.EqualTo(texture));
+            Assert.That(shapeModel.GetType(), Is.EqualTo(type));
+            Assert.That(shapeModel.GetColor(), Is.EqualTo(color));
+            Assert.That(shapeModel.GetTexture(), Is.EqualTo(texture));
         }
 
         /// <summary>
@@ -56,14 +57,14 @@ namespace Alphabet_School_Tests.ModelTests
             IShapeModel shapeModel = new ShapeModel(0, 0, 0);
 
             // Act
-            shapeModel.Type = type;
-            shapeModel.Color = color;
-            shapeModel.Texture = texture;
+            shapeModel.SetType(type);
+            shapeModel.SetColor(color);
+            shapeModel.SetTexture(texture);
 
             // Assert
-            Assert.That(shapeModel.Type, Is.EqualTo(type));
-            Assert.That(shapeModel.Color, Is.EqualTo(color));
-            Assert.That(shapeModel.Texture, Is.EqualTo(texture));
+            Assert.That(shapeModel.GetType(), Is.EqualTo(type));
+            Assert.That(shapeModel.GetColor(), Is.EqualTo(color));
+            Assert.That(shapeModel.GetTexture(), Is.EqualTo(texture));
         }
 
         /// <summary>

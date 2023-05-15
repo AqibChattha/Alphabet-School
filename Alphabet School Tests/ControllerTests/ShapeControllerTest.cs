@@ -2,11 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Alphabet_School_Tests.ControllerTests
+namespace Test.ControllerTests
 {
-    using Alphabet_School.Controllers;
-    using Alphabet_School.Models;
-    using Alphabet_School.Models.Enums;
+    using Engine.Controllers;
+    using Engine.Models;
+    using Engine.Models.Enums;
+    using NUnit.Framework;
 
     /// <summary>
     /// ShapeControllerTest class. Contains tests for ShapeController class.
@@ -40,16 +41,16 @@ namespace Alphabet_School_Tests.ControllerTests
             shapeController.CreateShape("LittleCircle", "Blue", "Solid");
 
             // Act
-            int totalShapes = shapeController.Shapes.Count;
+            int totalShapes = shapeController.GetShapes().Count;
             List<IShapeModel>? result = shapeController.RemoveMatchingShapes(shapeModels);
 
             // Assert
             Assert.That(result, Has.Count.EqualTo(shapeModels.Count));
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(totalShapes - result.Count));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(totalShapes - result.Count));
 
             for (int i = 0; i < result.Count; i++)
             {
-                Assert.That(result[i].Type.ToString(), Is.EqualTo(shapeModels[i].Type.ToString()));
+                Assert.That(result[i].GetType().ToString(), Is.EqualTo(shapeModels[i].GetType().ToString()));
             }
         }
 
@@ -94,12 +95,12 @@ namespace Alphabet_School_Tests.ControllerTests
             var shapeController = new ShapeController();
 
             // Act
-            int totalShapes = shapeController.Shapes.Count;
+            int totalShapes = shapeController.GetShapes().Count;
             bool result = shapeController.CreateShape(type, color, texture);
 
             // Assert
             Assert.That(result, Is.True);
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(totalShapes + 1));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(totalShapes + 1));
         }
 
         /// <summary>
@@ -119,12 +120,12 @@ namespace Alphabet_School_Tests.ControllerTests
             var shapeController = new ShapeController();
 
             // Act
-            int totalShapes = shapeController.Shapes.Count;
+            int totalShapes = shapeController.GetShapes().Count;
             bool result = shapeController.CreateShape(type, color, texture);
 
             // Assert
             Assert.That(result, Is.False);
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(totalShapes));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(totalShapes));
         }
 
         /// <summary>
@@ -156,9 +157,9 @@ namespace Alphabet_School_Tests.ControllerTests
             shapeController.UpdateShape(id, type, color, texture);
 
             // Assert
-            Assert.That(shapeController.Shapes[id - 1].Type.ToString(), Is.EqualTo(type));
-            Assert.That(shapeController.Shapes[id - 1].Color.ToString(), Is.EqualTo(color));
-            Assert.That(shapeController.Shapes[id - 1].Texture.ToString(), Is.EqualTo(texture));
+            Assert.That(shapeController.GetShapes()[id - 1].GetType().ToString(), Is.EqualTo(type));
+            Assert.That(shapeController.GetShapes()[id - 1].GetColor().ToString(), Is.EqualTo(color));
+            Assert.That(shapeController.GetShapes()[id - 1].GetTexture().ToString(), Is.EqualTo(texture));
         }
 
         /// <summary>
@@ -189,11 +190,11 @@ namespace Alphabet_School_Tests.ControllerTests
             bool result = shapeController.UpdateShape(id, type, color, texture);
 
             // Assert
-            if (id > 0 && id <= shapeController.Shapes.Count)
+            if (id > 0 && id <= shapeController.GetShapes().Count)
             {
-                Assert.That(shapeController.Shapes[id - 1].Type.ToString(), Is.Not.EqualTo(type));
-                Assert.That(shapeController.Shapes[id - 1].Color.ToString(), Is.Not.EqualTo(color));
-                Assert.That(shapeController.Shapes[id - 1].Texture.ToString(), Is.Not.EqualTo(texture));
+                Assert.That(shapeController.GetShapes()[id - 1].GetType().ToString(), Is.Not.EqualTo(type));
+                Assert.That(shapeController.GetShapes()[id - 1].GetColor().ToString(), Is.Not.EqualTo(color));
+                Assert.That(shapeController.GetShapes()[id - 1].GetTexture().ToString(), Is.Not.EqualTo(texture));
             }
 
             Assert.That(result, Is.False);
@@ -222,12 +223,12 @@ namespace Alphabet_School_Tests.ControllerTests
             shapeController.CreateShape("LittleCircle", "Blue", "Solid");
 
             // Act
-            int totalShapes = shapeController.Shapes.Count;
+            int totalShapes = shapeController.GetShapes().Count;
             bool result = shapeController.DeleteShape(id);
 
             // Assert
             Assert.That(result, Is.True);
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(totalShapes - 1));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(totalShapes - 1));
         }
 
         /// <summary>
@@ -250,12 +251,12 @@ namespace Alphabet_School_Tests.ControllerTests
             shapeController.CreateShape("LittleCircle", "Blue", "Solid");
 
             // Act
-            int totalShapes = shapeController.Shapes.Count;
+            int totalShapes = shapeController.GetShapes().Count;
             bool result = shapeController.DeleteShape(id);
 
             // Assert
             Assert.That(result, Is.False);
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(totalShapes));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(totalShapes));
         }
 
         /// <summary>
@@ -274,12 +275,12 @@ namespace Alphabet_School_Tests.ControllerTests
             shapeController.CreateShape("LittleCircle", "Blue", "Solid");
 
             // Act
-            int shapesCount = shapeController.Shapes.Count;
+            int shapesCount = shapeController.GetShapes().Count;
             shapeController.DeleteAllShapes();
 
             // Assert
             Assert.That(shapesCount, Is.Not.EqualTo(0));
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(0));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(0));
         }
 
         /// <summary>
@@ -310,7 +311,7 @@ namespace Alphabet_School_Tests.ControllerTests
             // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(expectedCount));
-            Assert.That(result.All(x => x.Color.ToString() == color), Is.True);
+            Assert.That(result.All(x => x.GetColor().ToString() == color), Is.True);
         }
 
         /// <summary>
@@ -339,7 +340,7 @@ namespace Alphabet_School_Tests.ControllerTests
             // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(expectedCount));
-            Assert.That(result.All(x => x.Texture.ToString() == texture), Is.True);
+            Assert.That(result.All(x => x.GetTexture().ToString() == texture), Is.True);
         }
 
         /// <summary>
@@ -356,22 +357,22 @@ namespace Alphabet_School_Tests.ControllerTests
             // Act and Assert - CreateShape
             shapeController.CreateShape("BigCurve", "Green", "Solid");
             shapeController.UndoCommand();
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(2));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(2));
 
             // Act and Assert - UpdateShape
             shapeController.UpdateShape(1, "LittleLine", "Blue", "Dotted");
             shapeController.UndoCommand();
-            Assert.That(shapeController.Shapes[0].Texture.ToString(), Is.EqualTo("Sand"));
+            Assert.That(shapeController.GetShapes()[0].GetTexture().ToString(), Is.EqualTo("Sand"));
 
             // Act and Assert - DeleteShape
             shapeController.DeleteShape(1);
             shapeController.UndoCommand();
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(2));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(2));
 
             // Act and Assert - DeleteAllShapes
             shapeController.DeleteAllShapes();
             shapeController.UndoCommand();
-            Assert.That(shapeController.Shapes.Count, Is.EqualTo(2));
+            Assert.That(shapeController.GetShapes().Count, Is.EqualTo(2));
         }
     }
 }

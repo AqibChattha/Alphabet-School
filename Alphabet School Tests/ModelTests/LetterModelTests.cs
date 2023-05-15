@@ -2,10 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Alphabet_School_Tests.ModelTests
+namespace Test.ModelTests
 {
-    using Alphabet_School.Models;
-    using Alphabet_School.Models.Enums;
+    using Engine.Models;
+    using Engine.Models.Enums;
+    using NUnit.Framework;
 
     /// <summary>
     /// LetterModelTests class. Contains tests for LetterModel class.
@@ -34,8 +35,8 @@ namespace Alphabet_School_Tests.ModelTests
             ILetterModel letterModel = new LetterModel(letter, shapes);
 
             // Assert
-            Assert.That(letterModel.Name, Is.EqualTo(letter));
-            Assert.That(shapes, Is.EqualTo(letterModel.Shapes));
+            Assert.That(letterModel.GetName(), Is.EqualTo(letter));
+            Assert.That(shapes, Is.EqualTo(letterModel.GetShapes()));
         }
 
         /// <summary>
@@ -51,12 +52,12 @@ namespace Alphabet_School_Tests.ModelTests
             ILetterModel letterModel = new LetterModel('\0', new List<IShapeModel>());
 
             // Act
-            letterModel.Name = letter;
-            letterModel.Shapes = shapes;
+            letterModel.SetName(letter);
+            letterModel.SetShapes(shapes);
 
             // Assert
-            Assert.That(letterModel.Name, Is.EqualTo(letter));
-            Assert.That(shapes, Is.EqualTo(letterModel.Shapes));
+            Assert.That(letterModel.GetName, Is.EqualTo(letter));
+            Assert.That(shapes, Is.EqualTo(letterModel.GetShapes()));
         }
 
         /// <summary>
